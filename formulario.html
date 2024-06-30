@@ -1,32 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario de Predicción</title>
+    <title>Formulario para Predicción</title>
 </head>
 <body>
-    <h2>Ingrese los datos para predecir:</h2>
-    <form action="/predict" method="post">
-        <label for="TeamStartingEquipmentValue">Team Starting Equipment Value:</label><br>
-        <input type="text" id="TeamStartingEquipmentValue" name="TeamStartingEquipmentValue"><br>
+    <h2>Formulario para Predicción</h2>
+    <form id="prediction-form">
+        <label for="feature1">Característica 1:</label>
+        <input type="text" id="feature1" name="feature1" required><br><br>
         
-        <label for="RoundKills">Round Kills:</label><br>
-        <input type="text" id="RoundKills" name="RoundKills"><br>
+        <label for="feature2">Característica 2:</label>
+        <input type="text" id="feature2" name="feature2" required><br><br>
         
-        <label for="RoundStartingEquipmentValue">Round Starting Equipment Value:</label><br>
-        <input type="text" id="RoundStartingEquipmentValue" name="RoundStartingEquipmentValue"><br>
-        
-        <label for="RLethalGrenadesThrown">Lethal Grenades Thrown:</label><br>
-        <input type="text" id="RLethalGrenadesThrown" name="RLethalGrenadesThrown"><br>
-        
-        <label for="PrimaryAssaultRifle">Primary Assault Rifle:</label><br>
-        <input type="text" id="PrimaryAssaultRifle" name="PrimaryAssaultRifle"><br>
-        
-        <label for="PrimaryPistol">Primary Pistol:</label><br>
-        <input type="text" id="PrimaryPistol" name="PrimaryPistol"><br>
-        
-        <input type="submit" value="Predecir">
+        <!-- Añade más campos según las características que tu modelo requiera -->
+
+        <button type="submit">Predecir</button>
     </form>
+
+    <div id="prediction-result"></div>
+
+    <script>
+        document.getElementById('prediction-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Obtén los valores de los campos
+            var feature1 = document.getElementById('feature1').value;
+            var feature2 = document.getElementById('feature2').value;
+
+            // Envía una solicitud POST al servidor para la predicción
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ feature1: feature1, feature2: feature2 })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Muestra el resultado de la predicción
+                document.getElementById('prediction-result').innerHTML = '<h3>Resultado de la predicción:</h3>' +
+                    '<p>Predicción: ' + data.prediction + '</p>';
+            })
+            .catch(error => {
+                console.error('Error al realizar la predicción:', error);
+            });
+        });
+    </script>
 </body>
 </html>
