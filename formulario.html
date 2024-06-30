@@ -1,50 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Formulario para Predicción</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Predicción</title>
 </head>
 <body>
-    <h2>Formulario para Predicción</h2>
-    <form id="prediction-form">
-        <label for="feature1">Característica 1:</label>
-        <input type="text" id="feature1" name="feature1" required><br><br>
-        
-        <label for="feature2">Característica 2:</label>
-        <input type="text" id="feature2" name="feature2" required><br><br>
-        
-        <!-- Añade más campos según las características que tu modelo requiera -->
+    <h2>Predicción basada en características</h2>
+    <form action="/predict" method="post">
+        <label for="teamStartingEquipment">Valor del equipo inicial del equipo:</label><br>
+        <input type="number" id="teamStartingEquipment" name="teamStartingEquipment" required><br><br>
+
+        <label for="roundStartingEquipment">Valor del equipo inicial de la ronda:</label><br>
+        <input type="number" id="roundStartingEquipment" name="roundStartingEquipment" required><br><br>
+
+        <label for="roundId">ID de la ronda:</label><br>
+        <input type="text" id="roundId" name="roundId" required><br><br>
+
+        <label for="matchId">ID del partido:</label><br>
+        <input type="text" id="matchId" name="matchId" required><br><br>
 
         <button type="submit">Predecir</button>
     </form>
-
-    <div id="prediction-result"></div>
-
-    <script>
-        document.getElementById('prediction-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            // Obtén los valores de los campos
-            var feature1 = document.getElementById('feature1').value;
-            var feature2 = document.getElementById('feature2').value;
-
-            // Envía una solicitud POST al servidor para la predicción
-            fetch('/predict', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ feature1: feature1, feature2: feature2 })
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Muestra el resultado de la predicción
-                document.getElementById('prediction-result').innerHTML = '<h3>Resultado de la predicción:</h3>' +
-                    '<p>Predicción: ' + data.prediction + '</p>';
-            })
-            .catch(error => {
-                console.error('Error al realizar la predicción:', error);
-            });
-        });
-    </script>
 </body>
 </html>
